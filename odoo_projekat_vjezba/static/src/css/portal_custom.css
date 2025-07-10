@@ -1,0 +1,5 @@
+.breadcrumb .fa-home,
+.breadcrumb li:has(.fa-home),
+.breadcrumb-item:has(.fa-home) {
+    display: none !important;
+}

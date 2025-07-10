@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="email2_template_offer_accepted" model="mail.template">
+        <field name="name">Offer Accepted Email</field>
+        <field name="model_id" ref="model_task_offer"/>
+        <field name="email_from">${(user.email or '')}</field>
+        <field name="email_to">${object.team_id.leader_id.email or ''}</field>
+        <field name="subject">Ponuda za zadatak ${object.task_id.name or ''} je prihvaćena</field>
+        <field name="body_html"><![CDATA[
+            <p>Pozdrav <t t-esc="object.team_id.name"/>,</p>
+            <p>Vaša ponuda za zadatak <strong><t t-esc="object.task_id.name"/></strong> je <strong>prihvaćena</strong>.</p>
+            <p>Detalji ponude:</p>
+            <ul>
+                <li>Cena: <t t-esc="object.price"/></li>
+                <li>Rok: <t t-esc="object.deadline"/></li>
+            </ul>
+            <p>Hvala na saradnji!</p>
+        ]]></field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <record id="email2_template_offer_rejected" model="mail.template">
+        <field name="name">Offer Rejected Email</field>
+        <field name="model_id" ref="model_task_offer"/>
+        <field name="email_from">${(user.email or '')}</field>
+        <field name="email_to">${object.team_id.leader_id.email or ''}</field>
+        <field name="subject">Ponuda za zadatak ${object.task_id.name or ''} je odbijena</field>
+        <field name="body_html"><![CDATA[
+            <p>Pozdrav <t t-esc="object.team_id.leader_id.name"/>,</p>
+            <p>Nažalost, vaša ponuda za zadatak <strong><t t-esc="object.task_id.name"/></strong> je <strong>odbijena</strong>.</p>
+            <p>Hvala na učestvovanju.</p>
+        ]]></field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>

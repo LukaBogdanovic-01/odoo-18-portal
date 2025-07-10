@@ -1,0 +1,20 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_construction_team_user,access.construction.team.user,odoo_projekat_vjezba.model_construction_team,base.group_user,1,1,1,1
+access_task_offer_user,access.task.offer.user,odoo_projekat_vjezba.model_task_offer,base.group_user,1,1,1,1
+access_project_task_user,access.project.task.user,project.model_project_task,base.group_user,1,0,0,0
+access_task_contract_user,access_task_contract_user,model_task_contract,base.group_user,1,1,1,1
+access_project_task_stage_user,access.project.task.stage.user,project.model_project_task_type,base.group_user,1,0,0,0
+access_construction_team_portal,access.construction.team.portal,odoo_projekat_vjezba.model_construction_team,base.group_portal,1,0,0,0
+access_task_offer_portal,access.task.offer.portal,odoo_projekat_vjezba.model_task_offer,base.group_portal,1,0,0,0
+access_project_task_portal,access.project.task.portal,project.model_project_task,base.group_portal,1,0,0,0
+access_project_task_stage_portal,access.project.task.stage.portal,project.model_project_task_type,base.group_portal,1,0,0,0
+
+access_task_contract_portal,access_task_contract_portal,model_task_contract,base.group_portal,1,0,0,0
+access_res_partner_portal_user,res.partner portal access,base.model_res_partner,base.group_portal,1,0,0,0
+access_offer_approval_portal,offer.approval portal access,model_offer_approval,base.group_portal,1,0,0,0
+
+access_offer_approval_admin,access_offer_approval_admin,model_offer_approval,base.group_system,1,1,1,1
+
+access_info_notification,access_info_notification,model_info_notification,,1,1,1,0
+access_info_notification_comment,access_info_notification_comment,model_info_notification_comment,,1,1,1,0
+access_info_chat_message,access_info_chat_message,model_info_chat_message,,1,1,1,0

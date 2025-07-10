@@ -1,0 +1,338 @@
+<odoo>
+
+    <template id="portal_info_tabla_content" name="Info Tabla Full Portal">
+  
+  <div class="js_dokumenti_tabs_loader container my-4">
+    <!-- Obavještenja forma -->
+    <div class="card mb-4">
+      <div class="card-header bg-success text-white">➕ Kreiraj novo obavještenje</div>
+      <div class="card-body">
+        <form id="notification-form" method="POST" action="/portal" data-oe-unlink="1" data-website-form="false" data-oe-model="" data-oe-id="" data-oe-field="">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+          <div class="form-group">
+            <input type="text" name="name" placeholder="Naslov obavještenja" class="form-control mb-2" required="required"/>
+            <textarea name="body" placeholder="Tekst obavještenja" class="form-control" required="required"></textarea>
+          </div>
+          <button type="submit" class="btn btn-success mt-2">Objavi</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Prikaz obavještenja -->
+    <h4 class="mb-3">📢 Info tabla</h4>
+    <t t-if="notifications">
+      <t t-foreach="notifications" t-as="note">
+        <div class="card mb-3">
+          <div class="card-header bg-primary text-white">
+            <strong t-esc="note.name"/> — <small t-esc="note.author_id.name"/>
+          </div>
+          <div class="card-body">
+            <p t-esc="note.body"/>
+            <hr/>
+            <h6>Komentari:</h6>
+            <ul>
+              <t t-foreach="note.comment_ids" t-as="comment">
+                <li><strong t-esc="comment.author_id.name"/>: <t t-esc="comment.body"/></li>
+              </t>
+            </ul>
+            <!-- Forma za komentar -->
+            <form method="POST" t-att-action="'/portal/info/comment/%s' % note.id" data-oe-unlink="1" data-website-form="false">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+              <div class="form-group">
+                <textarea name="body" class="form-control" rows="2" placeholder="Dodaj komentar..." required="required"></textarea>
+              </div>
+              <button type="submit" class="btn btn-sm btn-outline-primary mt-1">Komentariši</button>
+            </form>
+            <!-- Dugme za brisanje obavještenja -->
+<form method="POST" t-att-action="'/portal/info/delete_notification/%s' % note.id" class="mt-2 d-inline">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Da li ste sigurni da želite obrisati ovo obavještenje?')">🗑 Obriši</button>
+</form>
+
+          </div>
+        </div>
+      </t>
+    </t>
+    <t t-if="not notifications">
+      <div class="alert alert-info">Još uvijek nema obavještenja.</div>
+    </t>
+
+    <!-- Chat panel -->
+<div class="card mt-5">
+  <div class="card-header bg-dark text-white">💬 Privatna poruka</div>
+  <div class="card-body">
+
+    <!-- Izbor korisnika -->
+    <form method="GET" action="/portal/info/chat" id="receiver-select-form">
+      <div class="form-group">
+        <label>Primalac:</label>
+        <select class="form-control" name="receiver_id" id="chat-user-select" onchange="this.form.submit()">
+          <t t-set="selected_id" t-value="selected_user_id or 0"/>
+          <t t-foreach="users" t-as="u">
+            <option t-att-value="u.id" t-att-selected="u.id == selected_id and 'selected' or None">
+              <t t-esc="u.name"/>
+            </option>
+          </t>
+        </select>
+      </div>
+    </form>
+
+    <!-- Slanje poruke -->
+    <form method="POST" action="/portal/info/chat" data-website-form="false">
+      <input type="hidden" name="receiver_id" t-att-value="selected_user_id or ''"/>
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <div class="form-group mt-2">
+        <textarea name="body" class="form-control" placeholder="Unesi poruku..." required="required"></textarea>
+      </div>
+      <button type="submit" class="btn btn-dark mt-2">Pošalji</button>
+    </form>
+
+    <hr/>
+    <h6>📨 Poruke:</h6>
+    <ul class="list-group">
+      <t t-if="messages">
+        <t t-foreach="messages" t-as="m">
+          <li class="list-group-item">
+            <strong>Od:</strong> <t t-esc="m.sender_id.name"/> → <strong>Za:</strong> <t t-esc="m.receiver_id.name"/><br/>
+            <t t-esc="m.body"/>
+          </li>
+        </t>
+      </t>
+      <t t-if="not messages">
+        <li class="list-group-item text-muted">Nema poruka za odabranu osobu.</li>
+      </t>
+    </ul>
+  </div>
+</div>
+
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+<template id="portal_my_projects_content" name="Moji Projekti Sadržaj">
+  <div id="nav_tabs_content_projects">
+    <div id="projects-tab-content">
+      <div class="container">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-light p-2 rounded">
+            <li class="breadcrumb-item">
+              <a href="/portal">Početna</a>
+            </li>
+            <li class="breadcrumb-item active">Moji projekti</li>
+          </ol>
+        </nav>
+        <h2>Dashboard projekta</h2>
+
+        <!-- Filter dugmad -->
+        <div class="mb-3">
+          <button id="filter-mine" class="btn btn-outline-primary" t-if="not show_mine">Prikaži samo moje projekte</button>
+          <button id="filter-all" class="btn btn-outline-secondary" t-if="show_mine">Prikaži sve projekte</button>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-3 g-3">
+          <t t-if="projects">
+            <t t-foreach="projects" t-as="project">
+              <div class="col">
+                <div class="card h-100 shadow-sm text-decoration-none text-dark open-project"
+                     t-att-data-id="project.id"
+                     t-att-data-is-contractor="contractor_map[project.id]"
+                     style="border-left: 4px solid #0d6efd; cursor:pointer;">
+                  <div class="card-body">
+                    <h5 class="card-title text-truncate" t-att-title="project.name">
+                      <t t-esc="project.name"/>
+                    </h5>
+
+                    <t t-if="project.stage_id">
+                      <div>
+                        <strong>Status:</strong>
+                        <span class="badge bg-primary">
+                          <t t-esc="project.stage_id.name"/>
+                        </span>
+                      </div>
+                    </t>
+
+                    <t t-if="project.date_start">
+                      <div>
+                        <strong>Start date:</strong>
+                        <span class="badge bg-success">
+                          <t t-esc="project.date_start"/>
+                        </span>
+                      </div>
+                    </t>
+
+                    <t t-if="project.task_ids and len(project.task_ids) &gt; 0">
+                      <div>
+                        <strong>Tasks:</strong>
+                        <span class="badge bg-warning text-dark">
+                          <t t-esc="len(project.task_ids)"/>
+                        </span>
+                      </div>
+                    </t>
+
+                    <t t-if="project.tag_ids and len(project.tag_ids) &gt; 0">
+                      <div class="mt-2">
+                        <t t-foreach="project.tag_ids" t-as="tag">
+                          <span class="badge bg-secondary me-1">
+                            <t t-esc="tag.name"/>
+                          </span>
+                        </t>
+                      </div>
+                    </t>
+                  </div>
+                </div>
+              </div>
+            </t>
+          </t>
+
+          <t t-if="not projects">
+            <div class="col-12">
+              <div class="alert alert-info" role="alert">
+                Nema dostupnih projekata.
+              </div>
+            </div>
+          </t>
+        </div>
+      </div>
+
+      <!-- Modal za pristup odbijen -->
+      <div class="modal fade" id="projectAccessModal"
+           t-att-data-show="'true' if show_access_denied_modal else 'false'"
+           tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content border-danger">
+            <div class="modal-header bg-danger text-white">
+              <h5 class="modal-title">Pristup odbijen</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+            </div>
+            <div class="modal-body">
+              Nemate pristup ovom projektu jer niste jedan od izvođača.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+<!-- Ponude -->
+  <template id="portal_my_offers_content" name="Portal My Offers Content">
+    <div class="container">
+<nav aria-label="breadcrumb">
+<ol class="breadcrumb bg-light p-2 rounded">
+  <li class="breadcrumb-item">
+    <a href="/portal">Početna</a>
+  </li>
+  <li class="breadcrumb-item active">Moje ponude</li>
+</ol>
+</nav>
+
+
+
+      <h2>Moje ponude</h2>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Ponuda</th>
+            <th>Zadatak</th>
+            <th>Tim</th>
+            <th>Cijena</th>
+            <th>Rok</th>
+            <th>Status</th>
+            <th>Potpis ugovora</th>
+            <th>Odobrenje</th>
+          </tr>
+        </thead>
+        <tbody>
+          <t t-foreach="offers" t-as="offer">
+            <tr>
+              <td><t t-esc="offer.name"/></td>
+              <td><t t-esc="offer.task_id.name"/></td>
+              <td><t t-esc="offer.team_id.name"/></td>
+              <td><t t-esc="offer.price"/></td>
+              <td><t t-esc="offer.deadline"/></td>
+              <td><t t-esc="offer.status"/></td>
+              <td>
+                <t t-if="offer.status == 'accepted'">
+                  <a t-att-href="'/portal1/offer/%d/documents' % offer.id">📎 Upload potpisanog ugovora</a>
+                </t>
+                <t t-else="">
+                  <span class="text-muted">N/A</span>
+                </t>
+              </td>
+              <td>
+                <t t-esc="offer.approval_ids and offer.approval_ids[0].state or 'N/A'"/>
+              </td>
+            </tr>
+          </t>
+        </tbody>
+      </table>
+    </div>
+  </template>
+
+<!-- Ugovori -->
+    <template id="portal_my_contracts_content" name="Moji Ugovori - Snippet">
+    <div class="container mt16 mb16">
+<nav aria-label="breadcrumb">
+<ol class="breadcrumb bg-light p-2 rounded">
+  <li class="breadcrumb-item">
+    <a href="/portal">Početna</a>
+  </li>
+  <li class="breadcrumb-item active">Moji ugovori</li>
+</ol>
+</nav>
+
+      <h2>Moji ugovori</h2>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Zadatak</th>
+            <th>Tim</th>
+            <th>Status</th>
+            <th>Detalji</th>
+          </tr>
+        </thead>
+        <tbody>
+          <t t-if="contracts">
+            <t t-foreach="contracts" t-as="contract">
+              <tr>
+                <td><t t-esc="contract.task_id.name"/></td>
+                <td><t t-esc="contract.team_id.name"/></td>
+                <td>
+                  <t t-if="contract.status == 'draft'">Na čekanju</t>
+                  <t t-if="contract.status == 'uploaded'">Potpisan od strane tima</t>
+                  <t t-if="contract.status == 'confirmed'">Potvrđen od strane menadžera</t>
+                </td>
+                <td>
+                  <a t-att-href="'/portal1/task/%d/contract' % contract.task_id.id">Pogledaj ugovor</a>
+                </td>
+              </tr>
+            </t>
+          </t>
+          <t t-if="not contracts">
+            <tr>
+              <td colspan="4">Nemate nijedan ugovor.</td>
+            </tr>
+          </t>
+        </tbody>
+      </table>
+    </div>
+  </template>
+</odoo>

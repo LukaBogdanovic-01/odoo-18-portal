@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <template id="portal_my_offers_template" name="Portal My Offers">
+    <t t-call="portal.portal_layout">
+        <div class="container">
+            <h2>Moje ponude</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Ponuda</th>
+                        <th>Zadatak</th>
+                        <th>Tim</th>
+                        <th>Cijena</th>
+                        <th>Rok</th>
+                        <th>Status</th>
+                        <th>Potpis ugovora</th>
+                        <th>Odobrenje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="offers" t-as="offer">
+                        <tr>
+                            <td><t t-esc="offer.name"/></td>
+                            <td><t t-esc="offer.task_id.name"/></td>
+                            <td><t t-esc="offer.team_id.name"/></td>
+                            <td><t t-esc="offer.price"/></td>
+                            <td><t t-esc="offer.deadline"/></td>
+                            <td><t t-esc="offer.status"/></td>
+                            <td>
+                                <t t-if="offer.status == 'accepted'">
+                                    <a t-att-href="'/portal1/offer/%d/documents' % offer.id">📎 Upload potpisanog ugovora</a>
+                                </t>
+                                <t t-else="">
+                                    <span class="text-muted">N/A</span>
+                                </t>
+                            </td>
+                            <td>
+                                <t t-esc="offer.approval_ids and offer.approval_ids[0].state or 'N/A'"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </t>
+  </template>
+</odoo>

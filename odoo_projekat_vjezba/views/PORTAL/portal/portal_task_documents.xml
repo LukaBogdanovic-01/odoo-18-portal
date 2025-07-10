@@ -1,0 +1,45 @@
+<odoo>
+  <template id="portal_task_documents" name="Dokumenti zadatka">
+    <t t-call="portal.portal_layout">
+      <div class="container">
+            <nav aria-label="breadcrumb" class="mb-4 mt-2">
+<ol class="breadcrumb bg-light p-2 rounded">
+  <li class="breadcrumb-item">
+    <a href="/portal">Početna</a>
+  </li>
+  <li class="breadcrumb-item">
+    <a href="/portal#nav_tabs_content_1749017674113_74">Moje ponude</a>
+  </li>
+  <li class="breadcrumb-item active">
+    <t t-esc="task.name"/>
+  </li>
+</ol>
+    </nav>
+        <h2>Dokumenti za: <t t-esc="task.name"/></h2>
+        <t t-if="error">
+          <div class="alert alert-danger"><t t-esc="error"/></div>
+        </t>
+
+        <form method="post" enctype="multipart/form-data" t-att-action="'/portal1/offer/%s/documents' % offer.id">
+          <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+          <div class="form-group">
+            <label for="file">Dodaj dokument:</label>
+            <input type="file" name="file" class="form-control" required="required"/>
+          </div>
+          <button type="submit" class="btn btn-primary mt-2">Upload</button>
+        </form>
+
+        <h3 class="mt-4">Postojeći dokumenti</h3>
+        <ul>
+          <t t-foreach="attachments" t-as="doc">
+            <li>
+              <a t-attf-href="/web/content/#{doc.id}?download=true">
+                <t t-esc="doc.name"/>
+              </a>
+            </li>
+          </t>
+        </ul>
+      </div>
+    </t>
+  </template>
+</odoo>

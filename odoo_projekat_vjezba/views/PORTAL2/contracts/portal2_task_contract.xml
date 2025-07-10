@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <template id="portal2_my_contracts_template" name="Moji Ugovori">
+    <t t-call="portal.portal_layout">
+      <div class="container mt16 mb16">
+        <h2>Moji ugovori</h2>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Zadatak</th>
+              <th>Tim</th>
+              <th>Status</th>
+              <th>Detalji</th>
+            </tr>
+          </thead>
+          <tbody>
+            <t t-if="contracts">
+              <t t-foreach="contracts" t-as="contract">
+                <tr>
+                  <td><t t-esc="contract.task_id.name"/></td>
+                  <td><t t-esc="contract.team_id.name"/></td>
+                  <td>
+                      <t t-if="contract.status == 'draft'">Na čekanju</t>
+                      <t t-if="contract.status == 'uploaded'">Potpisan od strane tima</t>
+                      <t t-if="contract.status == 'confirmed'">Potvrđen od strane menadžera</t>
+                  </td>
+                  <td><a t-att-href="'/portal2/task/%d/contract' % contract.task_id.id">Pogledaj ugovor</a></td>
+                </tr>
+              </t>
+            </t>
+            <t t-if="not contracts">
+              <tr>
+                <td colspan="3">Nemate nijedan ugovor.</td>
+              </tr>
+            </t>
+          </tbody>
+        </table>
+      </div>
+    </t>
+  </template>
+</odoo>

@@ -1,0 +1,12 @@
+<odoo>
+  <record id="view2_project_form_inherit_partner" model="ir.ui.view">
+    <field name="name">project.project.form.partner</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.edit_project"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='name']" position="after">
+        <field name="partner_id"/>
+      </xpath>
+    </field>
+  </record>
+</odoo>

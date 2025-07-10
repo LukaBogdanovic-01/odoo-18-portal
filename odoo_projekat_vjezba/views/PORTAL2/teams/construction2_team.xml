@@ -1,0 +1,40 @@
+<odoo>
+    <!-- TREE VIEW -->
+    <record id="construction2_team_tree_view" model="ir.ui.view">
+        <field name="name">construction_team.list</field>
+        <field name="model">construction.team</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="leader_id"/>
+                <field name="member_ids"/>
+            </list>
+        </field>
+    </record>
+
+     <!-- FORM VIEW -->
+    <record id="construction2_team_form_view" model="ir.ui.view">
+        <field name="name">construction.team.form</field>
+        <field name="model">construction.team</field>
+        <field name="arch" type="xml">
+            <form string="Construction Team">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="leader_id"/>
+                        <field name="member_ids" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="construction2_team_action" model="ir.actions.act_window">
+        <field name="name">Construction Team</field>
+        <field name="res_model">construction.team</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="construction2_team_tree_view"/>
+        <field name="target">current</field>
+    </record>
+
+</odoo>

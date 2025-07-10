@@ -1,0 +1,58 @@
+{
+    "name": "Construction portal ",
+    "version": "18.0.1.0.0",
+    "summary": "Vjezba za projekat",
+    'license': 'LGPL-3',
+    "depends": ["project", "base", "mail", "hr", "website", "portal", "auth_signup", "web_editor"],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/task_offer_rules.xml",
+        "views/PORTAL/projects/project_project_views.xml",
+        "views/PORTAL/teams/construction_team.xml",
+        "views/PORTAL/offers/task_offers.xml",
+        "views/PORTAL/projects/project_tasks.xml",
+        "views/PORTAL/contracts/task_contract.xml",
+        "views/PORTAL/offers/task_offer_approval.xml",
+        "views/PORTAL/email/email_templates.xml",
+        "views/PORTAL/portal/portal_project_task_list_view.xml",
+        "views/PORTAL/portal/portal_no_offer_tasks.xml",
+        "views/PORTAL/portal/portal_task_documents.xml",
+        "views/PORTAL/portal/website_dokumenti_restore.xml",
+        "views/PORTAL/contracts/portal_task_contract.xml",
+        "views/PORTAL/portal/portal_projects_template.xml",
+        "views/PORTAL/contracts/portal_contract_details.xml",
+        "views/PORTAL/offers/project_offer_approval_form.xml",
+        "views/PORTAL/portal/portal_dashboard.xml",
+        "views/PORTAL/offers/portal_my_offers_template.xml",
+        "views/PORTAL/menu/menu_items.xml",
+
+        "static/src/xml/portal_tabovi.xml",
+        
+
+        "views/PORTAL2/projects/project2_project_views.xml",
+        "views/PORTAL2/teams/construction2_team.xml",
+        "views/PORTAL2/offers/task2_offers.xml",
+        "views/PORTAL2/projects/project2_tasks.xml",
+        "views/PORTAL2/contracts/task2_contract.xml",
+        "views/PORTAL2/offers/task2_offer_approval.xml",
+        "views/PORTAL2/email/email2_templates.xml",
+        "views/PORTAL2/portal/portal2_no_offer_tasks.xml",
+        "views/PORTAL2/portal/portal2_task_documents.xml",
+        "views/PORTAL2/contracts/portal2_task_contract.xml",
+        "views/PORTAL2/portal/portal2_projects_kanban.xml",
+        "views/PORTAL2/contracts/portal2_contract_details.xml",
+        "views/PORTAL2/offers/project2_offer_approval_form.xml",
+        "views/PORTAL2/portal/portal2_dashboard.xml",
+        "views/PORTAL2/offers/portal2_my_offers_template.xml",
+        "views/PORTAL2/menu/menu2_items.xml"
+        
+    ],
+        'assets': {
+            'web.assets_frontend': [
+                'odoo_projekat_vjezba/static/src/js/dokumenti_tabs_loader.js',
+                'odoo_projekat_vjezba/static/src/css/portal_custom.css',
+            ],
+    },
+    "installable": True,
+    "application": False,
+}

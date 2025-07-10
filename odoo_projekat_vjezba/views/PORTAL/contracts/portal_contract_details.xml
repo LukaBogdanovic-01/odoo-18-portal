@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <template id="portal_contract_detail_template" name="Detalji Ugovora">
+    <t t-call="portal.portal_layout">
+      <div class="container mt-4 mb-4">
+            <nav aria-label="breadcrumb" class="mb-4 mt-2">
+<ol class="breadcrumb bg-light p-2 rounded">
+  <li class="breadcrumb-item">
+    <a href="/portal">Početna</a>
+  </li>
+  <li class="breadcrumb-item">
+    <a href="/portal">Moji ugovori</a>
+  </li>
+  <li class="breadcrumb-item active">
+    <t t-esc="contract.task_id.name or 'Detalji ugovora'"/>
+  </li>
+</ol>
+    </nav>
+        <h2 class="mb-4">Detalji ugovora</h2>
+
+        <t t-if="contract">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+              <tbody>
+                <tr>
+                  <th class="w-25">Zadatak</th>
+                  <td><t t-esc="contract.task_id.name"/></td>
+                </tr>
+                <tr>
+                  <th>Tim</th>
+                  <td><t t-esc="contract.team_id.name"/></td>
+                </tr>
+                <tr>
+                  <th>Status</th>
+                  <td>
+                    <t t-if="contract.status == 'draft'">Na čekanju</t>
+                    <t t-if="contract.status == 'uploaded'">Potpisan od strane tima</t>
+                    <t t-if="contract.status == 'confirmed'">Potvrđen od strane menadžera</t>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Ugovor za potpisivanje</th>
+                  <td>
+                    <t t-if="contract.agreement_file">
+                      <a t-att-href="'/web/content/task.contract/%d/agreement_file?download=true' % contract.id" class="btn btn-outline-primary btn-sm" target="_blank">
+                        Preuzmi ugovor
+                      </a>
+                    </t>
+                    <t t-else="">
+                      <span class="text-muted">Ugovor nije dostupan.</span>
+                    </t>
+                  </td>
+                </tr>
+
+                <tr>
+                  <th>Vaš potpisani ugovor</th>
+                  <td>
+                    <t t-if="contract.user_signed_agreement">
+                      <a t-att-href="'/web/content/task.contract/%d/user_signed_agreement?download=true' % contract.id" class="btn btn-outline-success btn-sm" target="_blank">
+                        Preuzmi vaš ugovor
+                      </a>
+                      <br/>
+                      <small class="text-muted">
+                        Vrijeme: <t t-esc="contract.user_signed_agreement_date and contract.user_signed_agreement_date.strftime('%d.%m.%Y %H:%M') or 'N/A'"/>
+
+                      </small>
+                    </t>
+                    <t t-else="">
+                      <span class="text-muted">Niste još postavili potpisani ugovor.</span>
+                    </t>
+                  </td>
+                </tr>
+
+                <tr>
+                  <th>Potpis menadžera</th>
+                  <td>
+                    <t t-if="contract.admin_signed_agreement">
+                      <a t-att-href="'/web/content/task.contract/%d/admin_signed_agreement?download=true' % contract.id" class="btn btn-outline-dark btn-sm" target="_blank">
+                        Preuzmi ugovor od menadžera
+                      </a>
+                      <br/>
+                      <small class="text-muted">
+                        Vrijeme: <t t-esc="contract.admin_signed_agreement_date and contract.admin_signed_agreement_date.strftime('%d.%m.%Y %H:%M') or 'N/A'"/>
+
+                      </small>
+                    </t>
+                    <t t-else="">
+                      <span class="text-muted">Menadžer još nije postavio potpisani ugovor.</span>
+                    </t>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </t>
+
+        <t t-if="not contract">
+          <div class="alert alert-warning mt-4">
+            Ugovor nije pronađen ili nemate pristup.
+          </div>
+        </t>
+      </div>
+    </t>
+  </template>
+</odoo>

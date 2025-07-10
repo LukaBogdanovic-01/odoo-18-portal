@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="portal_my_home" name="Portal 1 - My Home">
+    <t t-call="portal.portal_layout">
+      <div class="container mt16 mb16">
+        <h2>Dobrodošli na portal</h2>
+        <p>Odaberite jednu od opcija:</p>
+        <ul>
+          <li><a href="/portal1/my_offers">📄 Moje ponude</a></li>
+          <li><a href="/my1/tasks">🛠️ Zadaci bez ponude</a></li>
+          <li><a href="/portal1/my_contracts">📑 Moji ugovori</a></li>
+          <li><a href="/my1/projects">📁 Moji projekti</a></li>
+        </ul>
+      </div>
+    </t>
+  </template>
+</odoo>

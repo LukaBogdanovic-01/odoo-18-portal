@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <template id="portal2_contract_detail_template" name="Detalji Ugovora">
+    <t t-call="portal.portal_layout">
+      <div class="container mt16 mb16">
+        <h2>Detalji ugovora</h2>
+
+        <t t-if="contract">
+          <p><strong>Zadatak:</strong> <t t-esc="contract.task_id.name"/></p>
+          <p><strong>Tim:</strong> <t t-esc="contract.team_id.name"/></p>
+          <p><strong>Status:</strong>
+            <t t-if="contract.status == 'draft'">Na čekanju</t>
+            <t t-if="contract.status == 'uploaded'">Potpisan od strane tima</t>
+            <t t-if="contract.status == 'confirmed'">Potvrđen od strane menadžera</t>
+          </p>
+
+          <!-- 🟢 Ugovor za preuzimanje -->
+          <t t-if="contract.agreement_file">
+            <p><strong>Ugovor za potpisivanje:</strong>
+              <a t-att-href="'/web/content/task.contract/%d/agreement_file?download=true' % contract.id" target="_blank">
+                Preuzmi ugovor za potpisivanje
+              </a>
+            </p>
+          </t>
+          <t t-if="not contract.agreement_file">
+            <p><em>Ugovor za potpisivanje nije dostupan.</em></p>
+          </t>
+
+          <!-- 🟡 Ugovor koji je korisnik postavio -->
+          <t t-if="contract.user_signed_agreement">
+            <p><strong>Vaš potpisani ugovor:</strong>
+              <a t-att-href="'/web/content/task.contract/%d/user_signed_agreement?download=true' % contract.id" target="_blank">
+                Preuzmi vaš potpisani ugovor
+              </a>
+            </p>
+          </t>
+          <t t-if="not contract.user_signed_agreement">
+            <p><em>Niste još postavili potpisani ugovor.</em></p>
+          </t>
+
+          <!-- 🔵 Ugovor koji je admin potpisao -->
+          <t t-if="contract.admin_signed_agreement">
+            <p><strong>Ugovor potpisan od strane menadžera:</strong>
+              <a t-att-href="'/web/content/task.contract/%d/admin_signed_agreement?download=true' % contract.id" target="_blank">
+                Preuzmi ugovor potpisan od strane menadžera
+              </a>
+            </p>
+          </t>
+          <t t-if="not contract.admin_signed_agreement">
+            <p><em>Menadžer još nije postavio potpisani ugovor.</em></p>
+          </t>
+        </t>
+
+        <t t-if="not contract">
+          <p>Ugovor nije pronađen ili nemate pristup.</p>
+        </t>
+      </div>
+    </t>
+  </template>
+</odoo>

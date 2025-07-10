@@ -1,0 +1,52 @@
+<odoo>
+    <!-- Tree view za listu odobrenja -->
+    <record id="view2_offer_approval_tree" model="ir.ui.view">
+        <field name="name">offer.approval.list.backend</field>
+        <field name="model">offer.approval</field>
+        <field name="arch" type="xml">
+            <list string="Offer Approvals">
+                <field name="offer_id"/>
+                <field name="approver_id"/>
+                <field name="state"/>
+                <field name="note"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form view za pojedinačno odobrenje -->
+    <record id="view2_offer_approval_form" model="ir.ui.view">
+        <field name="name">offer.approval.form.backend</field>
+        <field name="model">offer.approval</field>
+        <field name="arch" type="xml">
+            <form string="Offer Approval">
+                <sheet>
+                    <group>
+                        <field name="offer_id" readonly="1"/>
+                        <field name="approver_id" readonly="1"/>
+                        <field name="state"/>
+                        <field name="note"/>
+                    </group>
+                    <footer>
+                        <button string="Approve" type="object" name="action_approve"
+                                class="btn-primary"
+                                visible="state == 'pending'"/>
+                        <button string="Reject" type="object" name="action_reject"
+                                class="btn-danger"
+                                visible="state == 'pending'"/>
+                        <button string="Close" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Menu i action za backend -->
+    <record id="offer2_approval_action" model="ir.actions.act_window">
+        <field name="name">Offer Approvals</field>
+        <field name="res_model">offer.approval</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view2_offer_approval_tree"/>
+    </record>
+
+</odoo>

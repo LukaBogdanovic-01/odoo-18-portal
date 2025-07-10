@@ -1,0 +1,48 @@
+<odoo>
+  <!-- Portal can see its own task offers or none if nema veze -->
+  <record id="rule_task_offer_portal" model="ir.rule">
+    <field name="name">Portal - Own Task Offers</field>
+    <field name="model_id" ref="odoo_projekat_vjezba.model_task_offer"/>
+    <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+    <!-- Pusti pristup ako je tim lider korisnik, ili ako nema ponuda korisnik vidi prazno -->
+    <field name="domain_force">['|', ('team_id.leader_id', '=', user.id), ('id', '=', 0)]</field>
+  </record>
+
+  <!-- Portal can see its own construction teams or empty set -->
+  <record id="rule_construction_team_portal" model="ir.rule">
+    <field name="name">Portal - Own Construction Teams</field>
+    <field name="model_id" ref="odoo_projekat_vjezba.model_construction_team"/>
+    <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+    <field name="domain_force">['|', ('leader_id', '=', user.id), ('id', '=', 0)]</field>
+  </record>
+
+  <!-- Portal can see tasks via offers or empty set -->
+  <record id="rule_project_task_portal" model="ir.rule">
+    <field name="name">Portal - Tasks via Offer</field>
+    <field name="model_id" ref="project.model_project_task"/>
+    <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+    <field name="domain_force">['|', ('offer_ids.team_id.leader_id', '=', user.id), ('id', '=', 0)]</field>
+  </record>
+
+  <!-- Portal can read all task stages (no restriction) -->
+  <record id="rule_task_stage_portal" model="ir.rule">
+    <field name="name">Portal - All Stages</field>
+    <field name="model_id" ref="project.model_project_task_type"/>
+    <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+    <field name="domain_force">[(1, '=', 1)]</field>
+  </record>
+
+  <record id="rule_task_offer_no_backend_create" model="ir.rule">
+    <field name="name">Zabrani kreiranje ponuda za backend korisnike</field>
+    <field name="model_id" ref="odoo_projekat_vjezba.model_task_offer"/>
+    <!-- Ovo važi za sve obične backend korisnike -->
+    <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    <field name="perm_create" eval="False"/>
+    <!-- Dozvoli da vide sve, ali ne mogu kreirati -->
+    <field name="domain_force">[(1, '=', 1)]</field>
+  </record>
+
+</odoo>

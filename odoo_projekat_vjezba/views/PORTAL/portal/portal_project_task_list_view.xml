@@ -1,0 +1,63 @@
+<odoo>
+  <template id="portal_project_tasks_list" name="Project Tasks List">
+    <t t-call="website.layout">
+      <div class="container my-4">
+      <nav aria-label="breadcrumb" class="mb-4 mt-2">
+<ol class="breadcrumb bg-light p-2 rounded">
+  <li class="breadcrumb-item">
+    <a href="/portal">Početna</a>
+  </li>
+  <li class="breadcrumb-item">
+    <a href="/portal">Moji projekti</a>
+  </li>
+  <li class="breadcrumb-item active">
+    <t t-esc="project.name"/>
+  </li>
+</ol>
+    </nav>
+        <h2 class="mb-4">Zadaci za projekat: <t t-esc="project.name"/></h2>
+
+        <t t-if="tasks">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Naziv zadatka</th>
+                  <th>Status</th>
+                  <th>Izvođači</th>
+                </tr>
+              </thead>
+              <tbody>
+                <t t-foreach="tasks" t-as="task">
+                  <tr>
+                    <td class="text-primary"><t t-esc="task.name"/></td>
+                    <td>
+                      <span class="badge bg-primary"><t t-esc="task.stage_id.name or 'N/A'"/></span>
+                    </td>
+                    <td>
+                      <t t-if="task.user_ids">
+                        <ul class="mb-0 ps-3">
+                          <t t-foreach="task.user_ids" t-as="user">
+                            <li><t t-esc="user.name"/></li>
+                          </t>
+                        </ul>
+                      </t>
+                      <t t-else="">
+                        <span class="text-muted">Nema dodijeljenih izvođača</span>
+                      </t>
+                    </td>
+                  </tr>
+                </t>
+              </tbody>
+            </table>
+          </div>
+        </t>
+        <t t-else="">
+          <div class="alert alert-info mt-4">
+            Nema zadataka za ovaj projekat.
+          </div>
+        </t>
+      </div>
+    </t>
+  </template>
+</odoo>

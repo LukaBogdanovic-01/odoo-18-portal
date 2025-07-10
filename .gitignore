@@ -1,0 +1,98 @@
+# sphinx build directories
+
+_build/
+
+odoo/
+ 
+
+# dotfiles
+
+.*
+
+!.gitkeep
+
+!.github
+
+!.gitignore
+
+!.editorconfig
+
+!.eslintrc.yml
+
+!.gitmodules
+
+!.flake8
+
+!.isort.cfg
+
+!.pre-commit-config.yaml
+
+!.pylintrc
+
+!.pylintrc-mandatory
+
+# compiled python files
+
+*.py[co]
+
+# setup.py egg_info
+
+*.egg-info
+
+# emacs backup files
+
+*~
+
+# hg stuff
+
+*.orig
+
+status
+
+# odoo filestore
+
+openerp/filestore
+
+# generated for windows installer?
+
+install/win32/*.bat
+
+install/win32/meta.py
+
+upgrade.py
+
+*.deb
+
+# various virtualenv
+
+/a.r.odoo/
+
+/bin/
+
+/build/
+
+/dist/
+
+/include/
+
+/lib/
+
+/man/
+
+/share/
+
+/src/
+
+/eggs/
+
+/develop-eggs/
+
+/etc/
+
+/parts/
+
+/var/
+
+/data/
+
+/usr/

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="portal2_my_projects_template" name="Moji Projekti">
+    <t t-call="portal.portal_layout">
+      <div class="container">
+        <h2>Moji Projekti</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-3">
+          <t t-if="projects">
+            <t t-foreach="projects" t-as="project">
+              <div class="col">
+                <div class="card h-100 shadow-sm" style="border-left: 4px solid #0d6efd; cursor:pointer;">
+                  <div class="card-body">
+                    <h5 class="card-title text-truncate" t-att-title="project.name">
+                      <t t-esc="project.name"/>
+                    </h5>
+
+                    <!-- Status -->
+                    <t t-if="project.stage_id">
+                      <div>
+                        <strong>Status:</strong>
+                        <span class="badge bg-primary" style="font-size:0.85em; border-radius: 0.5rem; padding: 0.3em 0.6em; vertical-align: middle;">
+                          <t t-esc="project.stage_id.name"/>
+                        </span>
+                      </div>
+                    </t>
+
+                    <!-- Početak -->
+                    <t t-if="project.date_start">
+                      <div>
+                        <strong>Start date:</strong>
+                        <span class="badge bg-success" style="font-size:0.85em; border-radius: 0.5rem; padding: 0.3em 0.6em; vertical-align: middle;">
+                          <t t-esc="project.date_start"/>
+                        </span>
+                      </div>
+                    </t>
+
+                    <!-- Broj zadataka -->
+                    <t t-if="project.task_ids and len(project.task_ids) > 0">
+                      <div>
+                        <strong>Tasks:</strong>
+                        <span class="badge bg-warning text-dark" style="font-size:0.85em; border-radius: 0.5rem; padding: 0.3em 0.6em; vertical-align: middle;">
+                          <t t-esc="len(project.task_ids)"/>
+                        </span>
+                      </div>
+                    </t>
+
+                    <!-- Tagovi -->
+                    <t t-if="project.tag_ids and len(project.tag_ids) > 0">
+                      <div class="mt-2">
+                        <t t-foreach="project.tag_ids" t-as="tag">
+                          <span class="badge bg-secondary me-1" style="font-size:0.8em; border-radius: 0.5rem; padding: 0.25em 0.6em;">
+                            <t t-esc="tag.name"/>
+                          </span>
+                        </t>
+                      </div>
+                    </t>
+                  </div>
+                </div>
+              </div>
+            </t>
+          </t>
+          <t t-if="not projects">
+            <div class="col-12">
+              <div class="alert alert-info" role="alert">
+                No projects yet
+              </div>
+            </div>
+          </t>
+        </div>
+      </div>
+    </t>
+  </template>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="portal2_my_home" name="Portal 2 - My Home">
+    <t t-set="breadcrumbs" t-value="[('Portal 2', '/portal2-entry')]"/>
+    <t t-call="portal.portal_layout">
+      <div class="container mt16 mb16">
+        <h2>Dobrodošli na drugi portal</h2>
+        <p>Odaberite jednu od opcija:</p>
+        <ul>
+          <li><a href="/portal2/my_offers">📄 Moje ponude</a></li>
+          <li><a href="/my2/tasks">🛠️ Zadaci bez ponude</a></li>
+          <li><a href="/portal2/my_contracts">📑 Moji ugovori</a></li>
+          <li><a href="/my2/projects">📁 Moji projekti</a></li>
+        </ul>
+      </div>
+    </t>
+  </template>
+</odoo>

@@ -1,0 +1,71 @@
+<odoo>
+    <!-- Tree View -->
+    <record id="view2_task_contract_tree" model="ir.ui.view">
+        <field name="name">task.contract.list</field>
+        <field name="model">task.contract</field>
+        <field name="arch" type="xml">
+            <list string="Ugovori">
+                <field name="name"/>
+                <field name="task_id"/>
+                <field name="team_id"/>
+                <field name="price"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="is_signed"/>
+                <field name="date_signed"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view2_task_contract_form" model="ir.ui.view">
+        <field name="name">task.contract.form</field>
+        <field name="model">task.contract</field>
+        <field name="arch" type="xml">
+            <form string="Ugovor">
+                <header>
+                    <button name="action_confirm_contract"
+                            type="object"
+                            string="Potvrdi ugovor"
+                            class="btn-primary"
+                            invisible="status != 'uploaded'"/>
+                    <field name="status" widget="statusbar"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="task_id"/>
+                        <field name="team_id"/>
+                    </group>
+                    <group>
+                        <field name="price"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                    <group string="Fajlovi ugovora">
+                        <field name="agreement_file" filename="agreement_file_filename" widget="binary" readonly="1" options="{'accept':'.pdf,.doc,.docx'}"/>
+                        <field name="user_signed_agreement" filename="user_signed_agreement_filename" widget="binary" readonly="1" options="{'accept':'.pdf,.doc,.docx'}"/>
+                        <field name="admin_signed_agreement" filename="admin_signed_agreement_filename" widget="binary" options="{'accept':'.pdf,.doc,.docx'}"/>
+                    </group>
+                    <group>
+                        <field name="is_signed" readonly="1"/>
+                        <field name="date_signed" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="task2_contract_action" model="ir.actions.act_window">
+        <field name="name">Ugovori</field>
+        <field name="res_model">task.contract</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Kliknite na Kreiraj za novi ugovor.
+            </p>
+        </field>
+    </record>
+</odoo>
