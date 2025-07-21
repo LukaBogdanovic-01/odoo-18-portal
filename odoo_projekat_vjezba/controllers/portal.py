@@ -19,7 +19,6 @@ class RedirectPortalEntry(http.Controller):
             return request.redirect('/web/login')
         if request.env.user.id == request.website.user_id.id:
             return request.redirect('/web/login?redirect=/my/home')
-        
         # 👇 Redirektuj direktno na /portal koji koristi `website_dokumenti` template
         return request.redirect('/portal')
 
@@ -30,7 +29,7 @@ class TaskPortal(http.Controller):
     def list_tasks(self, **kwargs):
         user = request.env.user
 
-        if not (user.has_group('base.group_portal') or user.has_group('base.group_system')):
+        if not (user.has_group('base.group_portal') or user.has_group('base.group_system') or user.has_group('base.group_user')):
             raise AccessDenied()
 
         teams = request.env['construction.team'].search([('leader_id', '=', user.id)])
@@ -48,7 +47,7 @@ class PortalOffer(http.Controller):
     def my_offers(self, **kwargs):
         user = request.env.user
 
-        if not (user.has_group('base.group_portal') or user.has_group('base.group_system')):
+        if not (user.has_group('base.group_portal') or user.has_group('base.group_system') or user.has_group('base.group_user')):
             raise AccessDenied()
 
         teams = request.env['construction.team'].search([('leader_id', '=', user.id)])
@@ -63,7 +62,7 @@ class PortalOffer(http.Controller):
     @http.route(['/portal1/offer/approval/<int:approval_id>'], type='http', auth='user', website=True)
     def offer_approval_form(self, approval_id, **post):
         user = request.env.user
-        if not (user.has_group('base.group_portal') or user.has_group('base.group_system')):
+        if not (user.has_group('base.group_portal') or user.has_group('base.group_system') or user.has_group('base.group_user')):
             raise AccessDenied()
 
         approval = request.env['offer.approval'].sudo().browse(approval_id)
@@ -95,7 +94,7 @@ class TaskDocumentPortal(http.Controller):
     def offer_documents(self, offer_id, **post):
         user = request.env.user
 
-        if not (user.has_group('base.group_portal') or user.has_group('base.group_system')):
+        if not (user.has_group('base.group_portal') or user.has_group('base.group_system') or user.has_group('base.group_user')):
             raise AccessDenied()
 
         offer = request.env['task.offer'].sudo().browse(offer_id)
@@ -160,7 +159,7 @@ class TaskContractPortal(http.Controller):
     def list_contracts(self, **kwargs):
         user = request.env.user
 
-        if not (user.has_group('base.group_portal') or user.has_group('base.group_system')):
+        if not (user.has_group('base.group_portal') or user.has_group('base.group_system') or user.has_group('base.group_user')):
             raise AccessDenied()
 
         teams = request.env['construction.team'].search([('leader_id', '=', user.id)])

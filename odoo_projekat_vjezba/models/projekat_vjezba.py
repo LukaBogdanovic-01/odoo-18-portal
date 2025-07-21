@@ -318,26 +318,6 @@ class OfferApproval(models.Model):
         return True
 
 
-
-class PortalLoginLimited(AuthSignupHome):
-
-    @http.route('/web/login', type='http', auth='public', website=True, sitemap=False)
-    def web_login(self, redirect=None, **kw):
-        if request.httprequest.method == 'POST':
-            login = kw.get('login')
-            user = request.env['res.users'].sudo().search([('login', '=', login)], limit=1)
-
-            allowed_logins = ['admin']
-            portal_group = request.env['res.groups'].sudo().search([('name', '=', 'Portal')], limit=1)
-
-            if user and portal_group.id not in user.sudo().groups_id.ids and user.login not in allowed_logins:
-                return request.render('auth_signup.login', {
-                    'error': 'Prijava dozvoljena samo za portal korisnike i admina.',
-                    'redirect': redirect,
-                    'login': login
-                })
-
-        return super(PortalLoginLimited, self).web_login(redirect=redirect, **kw)
     
 
 
