@@ -29,7 +29,7 @@ class DokumentaTabPortal(http.Controller):
                 'notification_id': notification_id,
                 'author_id': request.env.user.id,
             })
-        return request.redirect('/portal/info/snippet')
+        return request.redirect('/portal')
 
     @http.route('/portal/info/chat', type='http', auth='user', website=True, methods=['GET', 'POST'])
     def portal_info_chat(self, **post):
@@ -53,11 +53,14 @@ class DokumentaTabPortal(http.Controller):
 
         # 📥 Info tabla
         notifications = request.env['info.notification'].sudo().search([], order="create_date desc")
-        messages = request.env['info.chat.message'].sudo().search([
-            '|',
-            ('receiver_id', '=', current_user.id),
-            ('sender_id', '=', current_user.id),
-        ], order='create_date desc', limit=20)
+        if receiver_id:
+            messages = request.env['info.chat.message'].sudo().search([
+                '|',
+                '&', ('sender_id', '=', current_user.id), ('receiver_id', '=', receiver_id),
+                '&', ('sender_id', '=', receiver_id), ('receiver_id', '=', current_user.id),
+            ], order='create_date asc')
+        else:
+            messages = []
         all_users = request.env['res.users'].sudo().search([])
 
         # 📦 Ugovori & ponude
@@ -237,6 +240,7 @@ class DokumentaTabPortal(http.Controller):
     def delete_notification(self, notification_id, **kwargs):
         note = request.env['info.notification'].sudo().browse(notification_id)
         if note.exists():
+            note.comment_ids.sudo().unlink()
             note.unlink()
         return request.redirect('/portal')
 

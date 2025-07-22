@@ -62,6 +62,16 @@
   <div class="card-header bg-dark text-white">💬 Privatna poruka</div>
   <div class="card-body">
 
+    <!-- NOVO: Prikaz s kim se vodi chat -->
+    <t t-if="selected_user_id">
+      <div class="alert alert-light">
+        💬 Razgovor sa: 
+        <strong>
+          <t t-esc="users.filtered(lambda u: u.id == selected_user_id)[0].name"/>
+        </strong>
+      </div>
+    </t>
+
     <!-- Izbor korisnika -->
     <form method="GET" action="/portal/info/chat" id="receiver-select-form">
       <div class="form-group">

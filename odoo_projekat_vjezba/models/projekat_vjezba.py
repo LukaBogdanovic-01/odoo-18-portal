@@ -341,7 +341,6 @@ class InfoNotificationComment(models.Model):
     author_id = fields.Many2one('res.users', string='Autor', default=lambda self: self.env.user)
     notification_id = fields.Many2one('info.notification', string='Obavještenje', required=True)
 
-
 class InfoChatMessage(models.Model):
     _name = 'info.chat.message'
     _description = 'Privatna poruka (chat)'
